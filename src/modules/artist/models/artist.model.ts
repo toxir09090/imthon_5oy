@@ -1,5 +1,14 @@
-import { Column, Model, Table, DataType, HasMany } from 'sequelize-typescript';
-import { Playlist } from 'src/modules/playlist';
+import {
+  Column,
+  Model,
+  Table,
+  DataType,
+  HasMany,
+  ForeignKey,
+  BelongsTo,
+} from 'sequelize-typescript';
+import { Playlist } from 'src/modules/playlist/models/playlist.model';
+import { Users } from 'src/modules/users/models/user.model';
 
 @Table({ tableName: 'artists', timestamps: true })
 export class Artist extends Model {
@@ -21,6 +30,13 @@ export class Artist extends Model {
   })
   imageUrl?: string;
 
-  @HasMany(()=>Playlist)
-  playlists:Playlist[]
+  @ForeignKey(() => Users)
+  @Column(DataType.INTEGER)
+  userId: number;
+
+  @BelongsTo(() => Users)
+  user: Users;
+
+  @HasMany(() => Playlist)
+  playlists: Playlist[];
 }

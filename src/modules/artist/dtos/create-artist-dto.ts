@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString, IsUrl } from 'class-validator';
 
 export class CreateArtistDto {
   @ApiProperty({
@@ -24,6 +24,11 @@ export class CreateArtistDto {
     format: 'binary',
   })
   @IsOptional()
-  @IsUrl()
-  image?: string;
+  imageUrl?: string;
+
+  @ApiProperty({
+    type: "number"
+  })
+  @IsOptional()
+  userId: number;
 }

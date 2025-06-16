@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/sequelize';
 import { Song } from './models';
 import { CreateSongDto } from './dtos';
 import { FsHelper } from 'src/helpers/fs.helper';
+import { Like } from '../likes/models/likes-model';
 
 @Injectable()
 export class SongService {
@@ -10,9 +11,9 @@ export class SongService {
     @InjectModel(Song) private readonly songModel: typeof Song,
     private readonly fsHelper: FsHelper,
   ) {}
-
+ 
   async getAll(): Promise<Song[]> {
-    return this.songModel.findAll();
+    return this.songModel.findAll({ include: Like });
   }
 
   async getOne(id: number) {

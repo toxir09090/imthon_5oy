@@ -3,7 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import {
   ArtistModule,
+  LikeModule,
   PlaylistModule,
+  SeedModule,
   SongModule,
   UserModule,
 } from './modules';
@@ -11,9 +13,6 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './filters/HttpException.filter';
 import * as path from 'path';
-import { LikeModule } from './modules/likes';
-import { SeedModule } from './modules/seed/seed.module';
-
 
 @Module({
   imports: [
@@ -34,12 +33,12 @@ import { SeedModule } from './modules/seed/seed.module';
       autoLoadModels: true,
       synchronize: true,
     }),
+    LikeModule,
     UserModule,
     ArtistModule,
     PlaylistModule,
     SongModule,
-    LikeModule,
-    SeedModule
+    SeedModule,
   ],
   providers: [
     {

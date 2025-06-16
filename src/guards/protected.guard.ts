@@ -37,7 +37,7 @@ export class ProtectedGuard implements CanActivate {
       throw new ConflictException('Bearer token berilmadi');
     }
 
-    const decoded = await this.jwt.verifyToken(token.split(' ')[1]);
+    const decoded = await this.jwt.verifyAccessToken(token.split(' ')[1]);
     request.id = decoded.id;
     request.role = decoded.role;
 

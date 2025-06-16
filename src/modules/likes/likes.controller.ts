@@ -1,13 +1,22 @@
-import { Controller, Post, Body, Get, Delete, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+} from '@nestjs/common';
 import { LikeService } from './likes.service';
+import { CreateLikeDto } from './dtos';
 
-@Controller('likes')
+@Controller('like')
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}
 
   @Post()
-  async create(@Body('song_id') song_id: number) {
-    return this.likeService.create(song_id);
+  async create(@Body() dto: CreateLikeDto) {
+    return this.likeService.create(dto.userId, dto.songId);
   }
 
   @Get()
@@ -15,8 +24,16 @@ export class LikeController {
     return this.likeService.findAll();
   }
 
-  @Delete(':song_id')
-  async delete(@Param('song_id') song_id: string) {
-    return this.likeService.delete(+song_id);
+  @Delete(':id')
+  async delete(@Param('id', ParseIntPipe) id: number) {
+    return this.likeService.delete(id);
+  }
+
+  @Delete('user/:userId/song/:songId')
+  async deleteByUserAndSong(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('songId', ParseIntPipe) songId: number,
+  ) {
+    return this.likeService.deleteByUserAndSong(userId, songId);
   }
 }

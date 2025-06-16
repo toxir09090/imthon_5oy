@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Artist } from './models/artist.model';
-import { CreateArtistDto, UpdateArtistDto } from './dtos';
+import { ArtistQueryDto, CreateArtistDto, UpdateArtistDto } from './dtos';
 import { FsHelper } from 'src/helpers/fs.helper';
 import { Playlist } from '../playlist';
 
@@ -14,22 +14,37 @@ export class ArtistService {
   ) {}
 
   async create(
-  dto: CreateArtistDto,
-  file?: Express.Multer.File,
-): Promise<Artist> {
-  const imageUrl = file ? this.fsHelper.uploadsImage(file): undefined;
+    dto: CreateArtistDto,
+    file?: Express.Multer.File,
+  ): Promise<Artist> {
+    const imageUrl = file ? this.fsHelper.uploadsImage(file) : undefined;
 
-  const artist = await this.artistModel.create({
-    name: dto.name,
-    genre: dto.genre,
-    imageUrl: dto.image,
-  });
+    const artist = await this.artistModel.create({
+      name: dto.name,
+      genre: dto.genre,
+      imageUrl: imageUrl,
+      userId: dto.userId,
+    });
 
-  return artist;
-}
+    return artist;
+  }
 
-  async findAll(): Promise<Artist[]> {
-    return this.artistModel.findAll();
+  async findAll(query: ArtistQueryDto): Promise<Artist[]> {
+    const {
+      limit = 10,
+      page = 1,
+      sortField = 'createdAt',
+      sortOrder = 'ASC',
+    } = query;
+
+    const offset = (page - 1) * limit;
+
+    return this.artistModel.findAll({
+      limit,
+      offset,
+      order: [[sortField, sortOrder]],
+      include: [Playlist],
+    });
   }
 
   async findOne(id: number): Promise<Artist> {

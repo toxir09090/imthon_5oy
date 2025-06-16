@@ -1,5 +1,7 @@
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import { Column, DataType, HasMany, Model, Table } from 'sequelize-typescript';
 import { UserRoles } from 'src/enum/roles.enum';
+import { Artist } from 'src/modules/artist/models/artist.model';
+import { Like } from 'src/modules/likes/models/likes-model';
 
 @Table({ tableName: 'users', timestamps: true })
 export class Users extends Model {
@@ -28,4 +30,10 @@ export class Users extends Model {
     allowNull: false,
   })
   password: string;
+
+  @HasMany(() => Artist)
+  artists: Artist[];
+
+  @HasMany(() => Like)
+  likes: Like[];
 }

@@ -46,10 +46,8 @@ export class CreateSongDto {
   image?: string;
 
   @ApiProperty({
-    example: 1,
-    description: 'Artist ID (foreign key)',
+    type: "number"
   })
-  @IsNotEmpty()
-  @IsInt()
-  artistId: number;
+  @IsOptional()
+  playlistId: number
 }

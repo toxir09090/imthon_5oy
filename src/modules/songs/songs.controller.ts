@@ -14,6 +14,9 @@ import { Song } from './models';
 import { CreateSongDto } from './dtos';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { Protected } from 'src/decorators/protected.decorator';
+import { Roles } from 'src/decorators/role.decorator';
+import { UserRoles } from 'src/enum/roles.enum';
 
 @ApiBearerAuth()
 @Controller('songs')
@@ -31,6 +34,8 @@ export class SongController {
   }
 
   @Post()
+  @Protected(false)
+  @Roles([UserRoles.ARTIST])
   @ApiConsumes('multipart/form-data')
   @UseInterceptors(
     FileFieldsInterceptor([

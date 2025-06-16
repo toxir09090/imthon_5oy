@@ -1,35 +1,44 @@
 import {
+  BelongsTo,
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
-import { Artist } from 'src/modules/artist';
+import { Like } from 'src/modules/likes/models/likes-model';
+import { Playlist } from 'src/modules/playlist/models/playlist.model';
 
 interface SongCreationAttrs {
   title: string;
   genre?: string;
   audioUrl?: string;
   coverImage?: string;
-  artistId: number;
+  playlistId?: number;
 }
 
 @Table({ tableName: 'songs', timestamps: true })
 export class Song extends Model<Song, SongCreationAttrs> {
   @Column({ type: DataType.STRING, allowNull: false })
-  title: string;
+  declare title: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  genre?: string;
+  declare genre?: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  audioUrl?: string;
+  declare audioUrl?: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  coverImage?: string;
+  declare coverImage?: string;
 
-  @ForeignKey(() => Artist)
-  @Column({ type: DataType.INTEGER, allowNull: false })
-  artistId: number;
+  @ForeignKey(() => Playlist)
+  @Column(DataType.INTEGER)
+  declare playlistId: number;
+
+  @BelongsTo(() => Playlist)
+  declare playlist: Playlist;
+
+  @HasMany(() => Like)
+  declare likes: Like[];
 }

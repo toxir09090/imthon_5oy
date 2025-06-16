@@ -20,10 +20,8 @@ export class CreatePlaylistDto {
   description?: string;
 
   @ApiProperty({
-    example: 1,
-    description: 'Foydalanuvchi IDsi (foreign key)',
+    type: "number"
   })
-  @IsNotEmpty()
-  @IsInt()
-  userId: number;
+  @IsOptional()
+  artistId: number;
 }

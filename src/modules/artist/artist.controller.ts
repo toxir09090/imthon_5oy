@@ -8,12 +8,17 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  Query,
 } from '@nestjs/common';
 import { ArtistService } from './artist.service';
-import { CreateArtistDto, UpdateArtistDto } from './dtos';
+import { ArtistQueryDto, CreateArtistDto, UpdateArtistDto } from './dtos';
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CheckFileMimeType, CheckFileSizePipe } from 'src/pipes';
+import { Protected } from 'src/decorators/protected.decorator';
+import { Roles } from 'src/decorators/role.decorator';
+import { UserRoles } from 'src/enum/roles.enum';
+import { Artist } from './models';
 
 @ApiBearerAuth()
 @ApiTags('Artists')
@@ -22,7 +27,9 @@ export class ArtistController {
   constructor(private readonly artistService: ArtistService) {}
 
   @Post()
-  @UseInterceptors(FileInterceptor('image'))
+  @Protected(false)
+  @Roles([UserRoles.ARTIST, UserRoles.ADMIN])
+  @UseInterceptors(FileInterceptor('imageUrl'))
   @ApiConsumes('multipart/form-data')
   create(
     @Body() dto: CreateArtistDto,
@@ -36,8 +43,8 @@ export class ArtistController {
   }
 
   @Get()
-  findAll() {
-    return this.artistService.findAll();
+  async findAll(@Query() query: ArtistQueryDto): Promise<Artist[]> {
+    return this.artistService.findAll(query);
   }
 
   @Get(':id')

@@ -2,8 +2,7 @@ import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { PlaylistService } from './playlist.service';
 import { PlaylistController } from './playlist.controller';
-import { Playlist } from './models';
-import { Artist } from '../artist';
+import { Playlist } from './models/playlist.model';
 
 @Module({
   imports: [SequelizeModule.forFeature([Playlist])],
