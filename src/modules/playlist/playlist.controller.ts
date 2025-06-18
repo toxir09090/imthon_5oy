@@ -12,11 +12,15 @@ export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
   @Get()
+  @Protected(false)
+  @Roles([UserRoles.ADMIN, UserRoles.ARTIST, UserRoles.USER])
   async getAll() {
     return this.playlistService.getAll();
   }
 
   @Get(':id')
+  @Protected(false)
+  @Roles([UserRoles.ADMIN])
   async getOne(@Param('id') id: string) {
     return this.playlistService.getOne(+id);
   }
@@ -25,12 +29,12 @@ export class PlaylistController {
   @Protected(false)
   @Roles([UserRoles.ARTIST])
   async create(@Body() dto: CreatePlaylistDto) {
-    console.log("dot p", dto);
-    
     return this.playlistService.create(dto);
   }
 
   @Delete(':id')
+  @Protected(false)
+  @Roles([UserRoles.ADMIN, UserRoles.ARTIST])
   async delete(@Param('id') id: string) {
     return this.playlistService.delete(+id);
   }

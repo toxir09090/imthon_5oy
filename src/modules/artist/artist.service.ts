@@ -4,6 +4,7 @@ import { Artist } from './models/artist.model';
 import { ArtistQueryDto, CreateArtistDto, UpdateArtistDto } from './dtos';
 import { FsHelper } from 'src/helpers/fs.helper';
 import { Playlist } from '../playlist';
+import { RedisService } from '../redis/redis.service';
 
 @Injectable()
 export class ArtistService {
@@ -11,6 +12,7 @@ export class ArtistService {
     @InjectModel(Artist)
     private readonly artistModel: typeof Artist,
     private readonly fsHelper: FsHelper,
+    private readonly redis: RedisService,
   ) {}
 
   async create(
@@ -46,23 +48,36 @@ export class ArtistService {
       include: [Playlist],
     });
   }
+  async findOne(id: number) {
+    const redisArtist = await this.redis.get('artist');
+    if (redisArtist && redisArtist !== 'null') {
+      return {
+        message: 'success',
+        data: JSON.parse(redisArtist),
+      };
+    }
 
-  async findOne(id: number): Promise<Artist> {
     const artist = await this.artistModel.findByPk(id);
     if (!artist) {
       throw new NotFoundException('Artist not found');
     }
-    return artist;
+
+    await this.redis.set('user', JSON.stringify(redisArtist), 600);
+
+    return {
+      message: 'success',
+      data: artist,
+    };
   }
 
   async update(id: number, dto: UpdateArtistDto): Promise<Artist> {
-    const artist = await this.findOne(id);
+    const { data: artist } = await this.findOne(id);
     await artist.update(dto);
     return artist;
   }
 
   async remove(id: number): Promise<void> {
-    const artist = await this.findOne(id);
+    const { data: artist } = await this.findOne(id);
     await artist.destroy();
   }
 }

@@ -24,13 +24,13 @@ export class Song extends Model<Song, SongCreationAttrs> {
   declare title: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  declare genre?: string;
+  declare genre: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  declare audioUrl?: string;
+  declare audioUrl: string;
 
   @Column({ type: DataType.STRING, allowNull: true })
-  declare coverImage?: string;
+  declare coverImage: string;
 
   @ForeignKey(() => Playlist)
   @Column(DataType.INTEGER)

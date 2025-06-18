@@ -1,0 +1,24 @@
+name: Ci pipiline
+on:
+  push:
+    branches: [main]
+jobs:
+  first_run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH agent
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{secrets.SSH_PRIVATE_KEY}}
+
+      - name: Pull latest code & restart app on server
+        run: |
+          ssh -o StrickHostKeyChecking=no ${{secrets.SSH_USER}}@${{secrets.SSH_HOST}}
+            cd ${{secrets.DEPLOY_PATH}}
+            git pull origin main
+            npm i 
+            pm2 restart spotify || pm2 start main.js --name spotify
+          EOF

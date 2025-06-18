@@ -23,27 +23,27 @@ export class CreateSongDto {
   })
   @IsOptional()
   @IsString()
-  genre?: string;
+  genre: string;
 
   @ApiProperty({
     example: '/uploads/lose-yourself.mp3',
     description: 'Audio fayl URL manzili',
-    required: false,
+    required: true,
     format:'binary'
   })
   @IsOptional()
   @IsUrl()
-  audio?: string;
+  audio: string;
 
   @ApiProperty({
     example: '/uploads/cover.jpg',
     description: "Qo'shiq uchun cover rasm manzili",
-    required: false,
+    required: true,
     format: 'binary'
   })
   @IsOptional()
   @IsUrl()
-  image?: string;
+  image: string;
 
   @ApiProperty({
     type: "number"

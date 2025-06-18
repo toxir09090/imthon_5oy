@@ -13,6 +13,8 @@ import { ServeStaticModule } from '@nestjs/serve-static';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpExceptionFilter } from './filters/HttpException.filter';
 import * as path from 'path';
+import { MailerModule } from '@nestjs-modules/mailer';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
   imports: [
@@ -22,6 +24,22 @@ import * as path from 'path';
     ServeStaticModule.forRoot({
       rootPath: path.join(process.cwd(), 'uploads'),
       serveRoot: '/uploads',
+    }),
+    MailerModule.forRoot({
+      transport: {
+        host: 'smtp.gmail.com',
+        auth: {
+          user: 'toxirturopov578@gmail.com',
+          pass: 'twcm ybjp xlgp qvzr',
+        },
+      },
+    }),
+    RedisModule.forRoot({
+      type: 'single',
+      options: {
+        host: 'localhost',
+        port: 6379,
+      },
     }),
     SequelizeModule.forRoot({
       dialect: 'postgres',

@@ -9,7 +9,9 @@ import {
 } from '@nestjs/common';
 import { LikeService } from './likes.service';
 import { CreateLikeDto } from './dtos';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
+@ApiBearerAuth()
 @Controller('like')
 export class LikeController {
   constructor(private readonly likeService: LikeService) {}

@@ -1,0 +1,13 @@
+.dockerignore
+compose.yaml
+
+node_modules/
+
+dist/
+test/
+uploads/
+
+pnpm-lock.yaml
+
+.git/
+.gitignore

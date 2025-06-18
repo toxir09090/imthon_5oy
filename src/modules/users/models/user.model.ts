@@ -30,7 +30,10 @@ export class Users extends Model {
     allowNull: false,
   })
   password: string;
-
+  @Column({
+    type: DataType.STRING,
+  })
+  token:string
   @HasMany(() => Artist)
   artists: Artist[];
 

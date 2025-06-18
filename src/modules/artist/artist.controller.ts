@@ -43,21 +43,29 @@ export class ArtistController {
   }
 
   @Get()
+  @Protected(false)
+  @Roles([UserRoles.ADMIN])
   async findAll(@Query() query: ArtistQueryDto): Promise<Artist[]> {
     return this.artistService.findAll(query);
   }
 
   @Get(':id')
+  @Protected(false)
+  @Roles([UserRoles.ADMIN])
   findOne(@Param('id') id: string) {
     return this.artistService.findOne(+id);
   }
 
   @Put(':id')
+  @Protected(false)
+  @Roles([UserRoles.ARTIST])
   update(@Param('id') id: string, @Body() dto: UpdateArtistDto) {
     return this.artistService.update(+id, dto);
   }
 
   @Delete(':id')
+  @Protected(false)
+  @Roles([UserRoles.ADMIN, UserRoles.ARTIST])
   remove(@Param('id') id: string) {
     return this.artistService.remove(+id);
   }

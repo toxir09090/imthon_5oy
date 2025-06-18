@@ -13,7 +13,6 @@ export class CreateArtistDto {
   @ApiProperty({
     example: 'Rap',
     description: 'Janri (ixtiyoriy)',
-    required: false,
   })
   @IsOptional()
   @IsString()
@@ -22,7 +21,7 @@ export class CreateArtistDto {
   @ApiProperty({
     type: 'string',
     format: 'binary',
-  })
+  }) 
   @IsOptional()
   imageUrl?: string;
 

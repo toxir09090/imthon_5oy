@@ -22,3 +22,13 @@ export class LoginUserDto {
   @MaxLength(20)
   password: string;
 }
+
+export class ForgotDto {
+  @ApiProperty({
+    type: 'string',
+    example: 'toxir@gmail.com',
+    required: true,
+  })
+  @IsEmail()
+  email: string;
+}

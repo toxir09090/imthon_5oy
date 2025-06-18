@@ -8,12 +8,12 @@ async function bootstrap() {
 
   app.setGlobalPrefix('/api');
 
-  app.enableVersioning({
+  app.enableVersioning({ 
     type: VersioningType.URI,
     defaultVersion: '1',
     prefix: 'v',
   });
-
+ 
   app.enableCors({
     allowedHeaders: ['authorization'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
@@ -28,7 +28,6 @@ async function bootstrap() {
       transform: true,
     }),
   );
-
   const config = new DocumentBuilder()
     .setTitle('Review Guards and File Upload')
     .setDescription('The review API description')
@@ -43,4 +42,4 @@ async function bootstrap() {
   await app.listen(process.env.APP_PORT ?? 3000);
 }
 bootstrap();
- 
+   

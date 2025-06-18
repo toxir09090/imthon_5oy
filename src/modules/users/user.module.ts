@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { JwtHelper } from 'src/helpers/jwt.helper';
 import { ConfigModule } from '@nestjs/config';
 import { GoogleStrategy } from './strategy';
+import { EmailService } from '../mail/mail.service';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { GoogleStrategy } from './strategy';
       },
     }),
   ],
-  providers: [UserService, JwtHelper,GoogleStrategy],
+  providers: [UserService, JwtHelper,GoogleStrategy,EmailService],
   controllers: [UserController],
   exports: [UserService]
 })

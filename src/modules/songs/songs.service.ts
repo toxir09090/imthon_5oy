@@ -11,7 +11,7 @@ export class SongService {
     @InjectModel(Song) private readonly songModel: typeof Song,
     private readonly fsHelper: FsHelper,
   ) {}
- 
+
   async getAll(): Promise<Song[]> {
     return this.songModel.findAll({ include: Like });
   }
@@ -43,7 +43,13 @@ export class SongService {
     return song;
   }
 
-  async delete(id: number): Promise<number> {
-    return this.songModel.destroy({ where: { id } });
+  async delete(id: number) {
+    try {
+      const findsong = await this.songModel.findByPk(id);
+      let a: string[] = [];
+      a.push(findsong?.dataValues.audioUrl || '');
+      this.fsHelper.removeFiles({ images: [], videos: [], audios: a });
+      return this.songModel.destroy({ where: { id } });
+    } catch (error) {}
   }
 }
